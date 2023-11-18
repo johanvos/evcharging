@@ -38,7 +38,7 @@ public class PowerCalculator {
         int minimumChargingW = (int) (minimumChargingA * voltage);
 
         int exportWhenChargingIsExcluded = Math.max(0, chargingW - activePower.getActivePower());
-
+LOGGER.info("Chargingstrategy = "+chargingStrategy.getType());
         int chargeAtAmps = switch (chargingStrategy.getType()) {
             case EXP -> Math.round(exportWhenChargingIsExcluded / voltage);
             case MAX -> (int)((chargingW + powerDifferenceW)/voltage);

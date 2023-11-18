@@ -47,7 +47,7 @@ public class HWEP1Client {
 
     @CacheResult(cacheName = "hwep1-telegram")
     public Telegram getTelegram() throws IOException {
-        LOGGER.fine("Requesting data from HWEP1");
+        LOGGER.info("Requesting data from HWEP1 with ip "+ip);
 
         HttpURLConnection conn = (HttpURLConnection) new URL("http://"+ip+"/api/v1/telegram").openConnection();
         conn.setRequestProperty("Accept", "text/plain");
@@ -58,7 +58,6 @@ public class HWEP1Client {
         }
         String body = new String(conn.getInputStream().readAllBytes());
         conn.getInputStream().close();
-
         return parseTelegram(body);
     }
 
@@ -79,7 +78,6 @@ public class HWEP1Client {
         })
         .filter(r -> r.getItem1() != null)
         .collect(Collectors.toMap(r -> r.getItem1(), r -> r.getItem2()));
-
         Telegram telegram = new Telegram();
         telegram.setTimestamp(map.get("0-0:1.0.0").get(0).replaceAll("W", ""));
         telegram.setActive_voltage_v(new BigDecimal(parseValue(map.get("1-0:32.7.0").get(0))));
@@ -89,13 +87,15 @@ public class HWEP1Client {
         telegram.setTotal_power_export_t2_kwh(new BigDecimal(parseValue(map.get("1-0:2.8.2").get(0))));
         telegram.setTotal_power_import_kwh(telegram.getTotal_power_import_t1_kwh().add(telegram.getTotal_power_import_t2_kwh()));
         telegram.setTotal_power_export_kwh(telegram.getTotal_power_export_t1_kwh().add(telegram.getTotal_power_export_t2_kwh()));
-        telegram.setTotal_gas_m3(new BigDecimal(parseValue(map.get("0-1:24.2.3").get(1))));
+        List<String> gasmap = map.get("0-1:24.2.3");
+        if ((gasmap!= null) && (gasmap.size() >0)) {
+            telegram.setTotal_gas_m3(new BigDecimal(parseValue(map.get("0-1:24.2.3").get(1))));
+        }
         telegram.setActive_power_average_w(new BigDecimal(parseValue(map.get("1-0:1.4.0").get(0))).multiply(new BigDecimal(1000)).intValue());
         telegram.setActive_power_import_w(new BigDecimal(parseValue(map.get("1-0:1.7.0").get(0))).multiply(new BigDecimal(1000)).intValue());
         telegram.setActive_power_export_w(new BigDecimal(parseValue(map.get("1-0:2.7.0").get(0))).multiply(new BigDecimal(1000)).intValue());
         telegram.setMontly_power_peak_timestamp(map.get("1-0:1.6.0").get(0).replaceAll("W", ""));
         telegram.setMontly_power_peak_w(new BigDecimal(parseValue(map.get("1-0:1.6.0").get(1))).multiply(new BigDecimal(1000)).intValue());
-
         return telegram;
     }
 

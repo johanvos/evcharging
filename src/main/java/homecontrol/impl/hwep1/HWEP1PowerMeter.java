@@ -24,10 +24,14 @@ public class HWEP1PowerMeter implements ElectricalPowerMeter {
     @Override
     @Retry(maxRetries = 10, delay = 3, delayUnit = ChronoUnit.SECONDS)
     public MeterReading getCurrentReading() {
+        System.err.println("HWEP1pm, get current reading");
         Telegram telegram = null;
         try {
             telegram = hwep1Client.getTelegram();
+            System.err.println("HWEP1pm, got current reading = "+telegram);
+
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
@@ -51,7 +55,8 @@ public class HWEP1PowerMeter implements ElectricalPowerMeter {
         Telegram telegram = null;
         try {
             telegram = hwep1Client.getTelegram();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
 
@@ -60,7 +65,6 @@ public class HWEP1PowerMeter implements ElectricalPowerMeter {
                 telegram.getActive_power_import_w() - telegram.getActive_power_export_w(),
                 telegram.getActive_power_average_w(),
                 telegram.getActive_voltage_v());
-
         return Uni.createFrom().item(activePower);
     }
 

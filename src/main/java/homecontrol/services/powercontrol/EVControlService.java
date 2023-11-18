@@ -24,6 +24,7 @@ public class EVControlService {
     private Charger.State chargerState;
 
     public EVState getCurrentState(StateRefresh refresh) throws EVException {
+        System.err.println("EVCS, getCurrentState");
         return electricVehicle.getCurrentState(refresh);
     }
 

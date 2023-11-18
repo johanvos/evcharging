@@ -37,6 +37,7 @@ public class TeslaClient {
                 .header("Authorization", "Bearer " + accessToken)
                 .GET()
                 .build();
+        System.err.println("request uri = "+request.uri());
         JsonObject responseObject = sendRequest(request);
         JsonObject rsp = responseObject.getJsonObject("response").getJsonObject("charge_state");
 
@@ -52,6 +53,8 @@ public class TeslaClient {
     }
 
     public boolean openChargePortDoor() throws TeslaException {
+        System.err.println("opencpdoor, blocked for now");
+        if (1 <2 )return true;
         if (accessToken == null) {
             accessToken = getAccessToken(refreshToken);
         }
@@ -69,6 +72,7 @@ public class TeslaClient {
     }
 
     public boolean setChargingAmps(int amps) throws TeslaException {
+        System.err.println("SET AMPS to "+amps);
         if (accessToken == null) {
             accessToken = getAccessToken(refreshToken);
         }
@@ -158,7 +162,7 @@ public class TeslaClient {
         jsonObject.put("refresh_token", refreshToken);
         jsonObject.put("grant_type", "refresh_token");
         jsonObject.put("scope", "openid email offline_access");
-
+        System.err.println("refreshtoken = "+refreshToken);
         HttpRequest request = HttpRequest.newBuilder()
                 .timeout(Duration.ofSeconds(10))
                 .uri(URI.create("https://auth.tesla.com/oauth2/v3/token"))
@@ -179,6 +183,7 @@ public class TeslaClient {
     private JsonObject sendRequest(HttpRequest request) throws TeslaException {
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response;
+        System.err.println("[TC] sendRequest "+request.uri());
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {

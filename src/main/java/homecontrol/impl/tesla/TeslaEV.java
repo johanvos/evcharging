@@ -30,6 +30,7 @@ public class TeslaEV implements ElectricVehicle {
 
     @PostConstruct
     public void postConstruct() {
+        System.err.println("REFTOKEN = " +refreshToken);
         teslaClient = new TeslaClient(refreshToken, vehicle);
     }
 

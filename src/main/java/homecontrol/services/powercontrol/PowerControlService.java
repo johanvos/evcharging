@@ -59,12 +59,12 @@ public class PowerControlService {
             Charger.State state = charger.getCurrentState(StateRefresh.REFRESH_ALWAYS);
             boolean changedChargerState = evControlService.handleChargerState(state);
             if (state.equals(Charger.State.NotConnected)) {
-                LOGGER.log(Level.INFO, "Charger Not Connected");
-                return;
+                LOGGER.log(Level.INFO, "Charger Not Connected, so?");
+               // return;
             }
 
             EVState evState = evControlService.getCurrentState(changedChargerState ? StateRefresh.REFRESH_ALWAYS : StateRefresh.CACHED);
-
+            LOGGER.info("EVState = "+evState);
             //STAP 1
             if (evState.getBattery_level() >= evState.getCharge_limit_soc()) {
                 LOGGER.log(Level.INFO, "Already at charging limit.");
@@ -77,6 +77,7 @@ public class PowerControlService {
                     TimeType.getTimeType(clock));
 
 
+            LOGGER.info("evcs = "+evChargingStrategy);
             //STAP 3
             Uni<ActivePower> activePowerUni = electricalPowerMeter.getActivePower();
             Uni<Integer> solarYieldUni = inverter.getCurrentYield();

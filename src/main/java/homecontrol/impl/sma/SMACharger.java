@@ -19,11 +19,11 @@ import java.time.temporal.ChronoUnit;
 @ApplicationScoped
 public class SMACharger implements Charger {
 
-    @ConfigProperty(name = "EVCHARGING_CHARGER_IP")
+    @ConfigProperty(name = "EVCHARGING_CHARGER_IP", defaultValue=" ")
     String chargerIp;
-    @ConfigProperty(name = "EVCHARGING_CHARGER_USERNAME")
+    @ConfigProperty(name = "EVCHARGING_CHARGER_USERNAME", defaultValue=" ")
     String chargerUserName;
-    @ConfigProperty(name = "EVCHARGING_CHARGER_PASSWORD")
+    @ConfigProperty(name = "EVCHARGING_CHARGER_PASSWORD", defaultValue=" ")
     String chargerPassword;
 
     private String token;
@@ -64,6 +64,8 @@ public class SMACharger implements Charger {
     }
 
     public State getStateInternal() {
+        if (chargerIp.trim().isEmpty()) return State.NotConnected;
+
         try {
             if (token == null) {
                 token = authenticate();
@@ -147,7 +149,10 @@ public class SMACharger implements Charger {
     }
 
     private long getReadingByKey(String key) {
+        System.err.println("SMACharger, getreadingsbykey "+key+" for chargerIp = "+chargerIp);
+        if (chargerIp.trim().isEmpty()) return 0;
         try {
+            System.err.println("non-null chargerIp");
             if (token == null) {
                 token = authenticate();
             }
