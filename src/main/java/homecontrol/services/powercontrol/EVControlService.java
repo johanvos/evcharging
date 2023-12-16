@@ -24,8 +24,11 @@ public class EVControlService {
     private Charger.State chargerState;
 
     public EVState getCurrentState(StateRefresh refresh) throws EVException {
-        System.err.println("EVCS, getCurrentState");
-        return electricVehicle.getCurrentState(refresh);
+        System.err.println("EVCS, getCurrentState...");
+        EVState answer = electricVehicle.getCurrentState(refresh);
+        System.err.println("evstate = "+answer);
+        LOGGER.info("evstate = "+answer);
+        return answer;
     }
 
     public boolean handleChargerState(Charger.State state) {
@@ -69,7 +72,7 @@ public class EVControlService {
             int currentAmps = chargeState.getCharge_amps();
 
             if (currentAmps == powerA) {
-                LOGGER.log(Level.INFO, "no power difference. leave everything as it is.");
+                LOGGER.log(Level.INFO, "no power difference. leave everything as it is with amps "+currentAmps);
                 return;
             }
 

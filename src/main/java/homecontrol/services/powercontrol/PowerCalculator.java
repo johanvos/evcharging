@@ -24,7 +24,7 @@ public class PowerCalculator {
         int remainingTimeInSec = (15 * 60) - passedTimeInSec;
 
         double maxUsageInPeriodnWh = currentMonth15minPeak / 4.;
-
+LOGGER.info("currentMonth15Minpeak = "+currentMonth15minPeak+" and maxusageinperiod = "+maxUsageInPeriodnWh);
         int currentPowerFromGridW = activePower.getActivePower() > 0 ? activePower.getActivePower() : 0;
         int currentPowerToGridW = activePower.getActivePower() < 0 ? -activePower.getActivePower() : 0;
 
@@ -32,13 +32,15 @@ public class PowerCalculator {
         double estimateRemainingInjectionInPeriodWh = (currentPowerToGridW / 3600. * remainingTimeInSec);
         double remainingUsageInPeriodWh = maxUsageInPeriodnWh - usageInPeriodWh - estimateRemainingUsageInPeriodWh;
 
+        LOGGER.info("maxUsageinPeriodnwh = " +maxUsageInPeriodnWh +", usageInPeriod = "+usageInPeriodWh+", estrem = "+estimateRemainingUsageInPeriodWh+" and remainingTime = "+remainingTimeInSec);
+
         int powerDifferenceW = (int) (((remainingUsageInPeriodWh * 900. + estimateRemainingInjectionInPeriodWh * 900.) / remainingTimeInSec) * 4);
 
         float voltage = activePower.getActiveVoltage().floatValue();
         int minimumChargingW = (int) (minimumChargingA * voltage);
-
         int exportWhenChargingIsExcluded = Math.max(0, chargingW - activePower.getActivePower());
-LOGGER.info("Chargingstrategy = "+chargingStrategy.getType());
+        LOGGER.info("ChargingStrategy = "+chargingStrategy.getType());
+        LOGGER.info("ChargingW = "+chargingW+", powerdiff = "+ powerDifferenceW+" and voltage = "+voltage);
         int chargeAtAmps = switch (chargingStrategy.getType()) {
             case EXP -> Math.round(exportWhenChargingIsExcluded / voltage);
             case MAX -> (int)((chargingW + powerDifferenceW)/voltage);
@@ -75,6 +77,7 @@ LOGGER.info("Chargingstrategy = "+chargingStrategy.getType());
         };
         chargeAtAmps = Math.max(chargeAtAmps, 0);
         if (chargeAtAmps < minimumChargingA) {
+            LOGGER.info("chargeAtAmps = "+chargeAtAmps+" but minimum = "+minimumChargingA);
             chargeAtAmps = 0;
         }
 

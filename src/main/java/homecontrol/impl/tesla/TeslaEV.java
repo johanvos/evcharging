@@ -37,6 +37,7 @@ public class TeslaEV implements ElectricVehicle {
     @Override
     @Retry(maxRetries = 3, delay = 15, delayUnit = ChronoUnit.SECONDS, retryOn = EVException.class)
     public EVState getCurrentState(StateRefresh stateRefresh) throws EVException {
+        LOGGER.info("GetCurrentState with refresh = "+stateRefresh);
         EVState state = switch (stateRefresh) {
             case CACHED_OR_NULL -> currentState;
             case CACHED -> getCurrentState();
