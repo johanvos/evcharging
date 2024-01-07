@@ -60,7 +60,7 @@ public class PowerControlService {
             boolean changedChargerState = evControlService.handleChargerState(state);
             if (state.equals(Charger.State.NotConnected)) {
                 LOGGER.log(Level.INFO, "Charger Not Connected, so?");
-                return;
+                // return;
             }
 
             EVState evState = evControlService.getCurrentState(changedChargerState ? StateRefresh.REFRESH_ALWAYS : StateRefresh.CACHED);
