@@ -39,7 +39,7 @@ public class TeslaClient {
                 .build();
         JsonObject responseObject = sendRequest(request);
         JsonObject rsp = responseObject.getJsonObject("response").getJsonObject("charge_state");
-
+        LOGGER.info("Info from TeslaWS: "+ rsp);
         EVState state = new EVState();
         state.setCharge_amps(rsp.getInteger("charge_amps"));
         state.setCharge_current_request(rsp.getInteger("charge_current_request"));

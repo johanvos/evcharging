@@ -15,9 +15,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class HWEP1PowerMeter implements ElectricalPowerMeter {
+    public static final Logger LOGGER = Logger.getLogger(HWEP1PowerMeter.class.getName());
+
     @Inject
     private HWEP1Client hwep1Client;
 
@@ -67,10 +70,13 @@ public class HWEP1PowerMeter implements ElectricalPowerMeter {
     @Override
     @Retry(maxRetries = 3, delay = 2, delayUnit = ChronoUnit.SECONDS)
     public MonthlyPowerPeak getMonthlyPowerPeak() {
+        LOGGER.info("getMonthlyPowerPeak");
         Telegram telegram = null;
         try {
             telegram = hwep1Client.getTelegram();
+            LOGGER.info("gotMonthlyPowerPeak: " + telegram);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return new MonthlyPowerPeak(LocalDateTime.parse(telegram.getMontly_power_peak_timestamp(),

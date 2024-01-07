@@ -164,6 +164,7 @@ public class TeslaEV implements ElectricVehicle {
     }
 
     private EVException handleTeslaException(TeslaException e) {
+        LOGGER.severe("major error from Tesla: "+e);
         if (e.getCode() == 401) {
             teslaClient.clearAccessToken();
         } else if (e.getCode() == 408) {

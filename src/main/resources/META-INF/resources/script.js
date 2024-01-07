@@ -1,4 +1,4 @@
-var ratioChart;
+// var ratioChart;
 var gridGauge;
 var evGauge;
 var pvGauge;
@@ -31,8 +31,8 @@ function refreshData() {
             ]
           }]
         };
-        ratioChart.data = data;
-        ratioChart.update();
+        // ratioChart.data = data;
+        // ratioChart.update();
         evGauge.refresh(d.evW);
         pvGauge.refresh(d.pvW);
         monthPeakGauge.refresh(d.monthlyPowerPeakW);
@@ -71,7 +71,7 @@ function refreshData() {
 }
 
 $(function () {
-    const ctx = document.getElementById('ratioChart');
+    // const ctx = document.getElementById('ratioChart');
     const data = {
       datasets: [{
         label: '',
@@ -104,7 +104,7 @@ $(function () {
       },
     };
 
-    ratioChart = new Chart(ctx, config);
+    // ratioChart = new Chart(ctx, config);
 
     gridGauge = new JustGage({
         id: "gridGauge", // the id of the html element

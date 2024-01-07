@@ -58,6 +58,7 @@ public class PowerPeakService {
                 }
             }catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "could not get current month peak. defaulting to minimum peak", e);
+                e.printStackTrace();
             }
             return configService.getMin15minPeak();
         } else {

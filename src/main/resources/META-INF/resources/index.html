@@ -28,6 +28,16 @@
       box-sizing: border-box;
     }
 
+    .box-mini {
+      float: left;
+      min-width: 3px;
+      max-width: 30px;
+      overflow: hidden;
+      min-height: 24px;
+      max-height: 24px;
+      box-sizing: border-box;
+    }
+
     .box-small {
       float: left;
       min-width: 350px;
@@ -152,24 +162,18 @@
 <body>
 <p><span id="livedatatimestamp"> - loading - </span></p>
 <div class="wrapper">
-    <div class="box-small">
+    <div hidden="true" class="box-small">
         <canvas id="ratioChart"></canvas>
     </div>
 
     <div class="box">
         <div id="gridGauge" class="gauge"></div>
     </div>
-    <div class="box">
+    <div hidden="true" class="box">
         <div id="pvGauge" class="gauge"></div>
     </div>
-    <div class="box">
+    <div hidden="true" class="box">
         <div id="usageGauge" class="gauge"></div>
-    </div>
-    <div class="box">
-        <span class="ui-icon ui-icon-check" id="evconnected"></span>
-        <span class="ui-icon ui-icon-closethick" id="evnotconnected"></span>
-        <span id="evbatterylevel"></span>
-        <div id="evGauge" class="gauge"></div>
     </div>
     <div class="box-medium">
         <div id="monthPeakGauge" class="gauge"></div>
@@ -180,6 +184,12 @@
     </div>
     <div class="box">
         <div id="newAverageEstimateGauge" class="gauge"></div>
+    </div>
+    <div class="box">
+        <span class="ui-icon ui-icon-check" id="evconnected"></span>
+        <span class="ui-icon ui-icon-closethick" id="evnotconnected"></span>
+        <span id="evbatterylevel"></span>
+        <div hidden="true" id="evGauge" class="gauge"></div>
     </div>
 
 

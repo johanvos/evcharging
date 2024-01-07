@@ -33,6 +33,7 @@ public class SMACharger implements Charger {
     @Override
     @Retry(maxRetries = 3, delay = 2, delayUnit = ChronoUnit.SECONDS)
     public State getCurrentState(StateRefresh stateRefresh) {
+        if ("NONE".equals(chargerIp)) return State.InProgress;
         var state = switch (stateRefresh) {
             case CACHED_OR_NULL -> this.state;
             case CACHED -> {
