@@ -79,7 +79,8 @@ public class HWEP1PowerMeter implements ElectricalPowerMeter {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-        return new MonthlyPowerPeak(LocalDateTime.parse(telegram.getMontly_power_peak_timestamp(),
+        System.err.println("PP = "+telegram.getMontly_power_peak_timestamp().replaceAll("S", ""));
+        return new MonthlyPowerPeak(LocalDateTime.parse(telegram.getMontly_power_peak_timestamp().replaceAll("S", ""),
                 DateTimeFormatter.ofPattern("yyMMddHHmmss")).atZone(ZoneId.of("Europe/Brussels")),
                 telegram.getMontly_power_peak_w());
     }

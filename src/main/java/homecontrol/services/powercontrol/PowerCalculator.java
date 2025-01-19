@@ -45,12 +45,13 @@ public class PowerCalculator {
             case MAX_OPT -> {
                 int newChargingAmps = (int)((chargingW + powerDifferenceW)/voltage);
 
+                System.err.println("ChargingW = " + chargingW+" and pdw = "+powerDifferenceW+" hence newCa = "+newChargingAmps+" and passedTS = "+passedTimeInSec+" and currentA = "+currentChargingA);
                 if (passedTimeInSec < 60) {
                     if (currentChargingA > 0) {
                         yield currentChargingA;
                     }
                 }
-                if (passedTimeInSec < 120) {
+                if (passedTimeInSec < 480) {
                     if (newChargingAmps > minimumChargingA) {
                         yield newChargingAmps - 1;
                     }
